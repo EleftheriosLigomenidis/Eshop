@@ -7,18 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 using Infrastructure.Data;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-
+using Core.Interfaces;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly EshopDb _context;
+        private readonly IProductRepository _productReposit;
 
-        public ProductsController(EshopDb context)
+        public ProductsController(IProductRepository productReposit)
         {
-            _context = context;
+            _productReposit = productReposit;
         }
 
         [HttpGet]
@@ -26,7 +26,7 @@ namespace API.Controllers
         {
             // action result we are returning a type of http response
             // async instead of passing the request to finish it passes it into a delegateto query the database
-            return Ok( await  _context.Products.ToListAsync());
+            return Ok( await _productReposit.GetProductsAsync());
 
 
         }
@@ -34,8 +34,19 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id )
         {
-            
-            return await _context.Products.FindAsync(id);
+            return await _productReposit.GetProductByIdAsync(id);
+        }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<ProductBrand>> GetProductBrands()
+        {
+            return Ok(await _productReposit.GetProductBrands());
+        }
+
+        [HttpGet("types")]
+        public async Task<ActionResult<ProductBrand>> GetProductTypes()
+        {
+            return Ok(await _productReposit.GetProductTypes());
         }
     }
 }

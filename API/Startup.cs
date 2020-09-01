@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Core.Interfaces;
+
 
 namespace API
 {
@@ -32,6 +34,8 @@ namespace API
             services.AddControllers(); //support for controllers
             services.AddDbContext<EshopDb>(o =>
             o.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IProductRepository, ProductRepository>();
+            // add singleton //add transient
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
