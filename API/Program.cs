@@ -20,7 +20,7 @@ namespace API
             var host = CreateHostBuilder(args).Build(); //  create host aka create server kesterl 
             using(var scope = host.Services.CreateScope())
             {
-                var services = scope.ServiceProvider;
+                var services = scope.ServiceProvider;   
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                 try
                 {

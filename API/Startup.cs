@@ -13,7 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Core.Interfaces;
-
+using AutoMapper;
+using API.Helpers;
 
 namespace API
 {
@@ -36,6 +37,8 @@ namespace API
             o.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IProductRepository, ProductRepository>();
             // add singleton //add transient
+            services.AddScoped(typeof(IGenericRepository<>),typeof ( GenericRepository<>));
+            services.AddAutoMapper(typeof(MappingProfiles));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +54,7 @@ namespace API
 
             app.UseRouting();
 
+            app.UseStaticFiles();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
