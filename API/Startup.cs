@@ -15,6 +15,10 @@ using Microsoft.EntityFrameworkCore;
 using Core.Interfaces;
 using AutoMapper;
 using API.Helpers;
+using API.Middleware;
+using API.errors;
+using Microsoft.OpenApi.Models;
+using API.Extentions;
 
 namespace API
 {
@@ -33,29 +37,31 @@ namespace API
         {
             // dependency injection container
             services.AddControllers(); //support for controllers
+           
             services.AddDbContext<EshopDb>(o =>
             o.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IProductRepository, ProductRepository>();
-            // add singleton //add transient
-            services.AddScoped(typeof(IGenericRepository<>),typeof ( GenericRepository<>));
+            services.AddApplicationServices(); 
             services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddSwaggerServices();
+   
         }
-
+      
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // adding middleware
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseMiddleware<ExceptionMiddleware>();   
 
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseStaticFiles();
             app.UseAuthorization();
+            app.UseSwaggerDocumentation();
+        
+            
 
             app.UseEndpoints(endpoints =>
             {
