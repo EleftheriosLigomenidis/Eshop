@@ -12,6 +12,8 @@ using Core.Specifications;
 using API.Dtos;
 using AutoMapper;
 using API.errors;
+using Core;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -35,14 +37,17 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturn>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<Pagination<Product>>>> GetProducts([FromQuery]ProductSpecParams productParams)
         {
-            var spec = new ProductsWithTypesAndBrands();
+            var spec = new ProductsWithTypesAndBrands(productParams);
             // action result we are returning a type of http response
             // async instead of passing the request to finish it passes it into a delegateto query the database
             var products =  await _productReposit.ListAsync(spec);
+            var countSpecs = new ProductWithFiltersSpecification(productParams);
 
-            return Ok(_mapper.Map<IReadOnlyList<Product>,IReadOnlyList<ProductToReturn>>(products));
+            var totalItems = await _productReposit.CountAsync(countSpecs);
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturn>>(products);
+            return Ok(new Pagination<ProductToReturn>(productParams.PageIndex,productParams.PageSize,totalItems,data));
         }
 
         [HttpGet("{id}")]
@@ -52,6 +57,8 @@ namespace API.Controllers
         {
 
             var spec = new ProductsWithTypesAndBrands(id);
+
+            
             var product =  await _productReposit.GetEntityWithSpec(spec);
             if(product == null)
             {

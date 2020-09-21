@@ -16,7 +16,7 @@ namespace Infrastructure.Data
         {
             try
             {
-                if (!context.ProductBrands.Any())
+                if (!context.ProductBrands.Any())   
                 {
                     var brandsData = File.
                         ReadAllText("../Infrastructure/Data/SeedData/brands.json");

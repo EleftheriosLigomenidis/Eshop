@@ -11,5 +11,11 @@ namespace Core.Specifications
         List<Expression<Func<T,object>>> Includes { get; }
         // we do this because we want to use Generic and Include statements
 
+        Expression<Func<T, object>> OrderBy { get; }
+        Expression<Func<T, object>> OrderByDescending { get; }
+
+         int Take { get; }
+         int Skip { get; }
+         bool IsPagingEnabled { get; }
     }
 }

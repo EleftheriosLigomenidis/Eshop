@@ -43,6 +43,14 @@ namespace API
             services.AddApplicationServices(); 
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddSwaggerServices();
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                 {
+                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:44389");
+ 
+                 });
+            });
    
         }
       
@@ -59,6 +67,7 @@ namespace API
 
             app.UseStaticFiles();
             app.UseAuthorization();
+            app.UseCors("CorsPolicy");
             app.UseSwaggerDocumentation();
         
             
