@@ -47,7 +47,7 @@ namespace API
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                  {
-                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:44389");
+                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"); // the address where the client lives 
  
                  });
             });
