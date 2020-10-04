@@ -4,17 +4,21 @@ import {HttpClientModule} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { CoreComponent } from './core/core.component';
+import { CoreModule } from './core/core.module';
+import { ShopModule } from './shop/shop.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [	
     AppComponent,
-      NavBarComponent
+      
    ],
   imports: [
     BrowserModule, // used for serving content into the browser
     AppRoutingModule, NgbModule, // used for routing example  https://www.skinet.gr/products
-    HttpClientModule
+    HttpClientModule,CoreModule,ShopModule, BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
