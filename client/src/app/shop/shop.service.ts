@@ -47,7 +47,7 @@ baseUrl = 'https://localhost:44389/api/';
   }
 
   getProduct(id:number){
-    return this.http.get<IProduct>(this.baseUrl + 'products' + id);
+    return this.http.get<IProduct>(this.baseUrl + 'products/' + id);
   }
   getProductTypes(){
 

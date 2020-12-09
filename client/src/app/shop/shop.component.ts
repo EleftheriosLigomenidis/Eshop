@@ -12,7 +12,9 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 })
 export class ShopComponent implements OnInit {
 products: IProduct [];
-@ViewChild('search',{static:true}) searchterm : ElementRef; // it does no rely on a dynamic activity
+@ViewChild('search',{static:false}) searchterm : ElementRef; // it does no rely on a dynamic activity
+// Viewchild runs a query to the dom to get an element
+// variable searchTerm of type ElementRef
 brands: IBrand[];
 productTypes: IProductType[];
 shopParams = new ShopParams();
