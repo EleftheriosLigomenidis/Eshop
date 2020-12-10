@@ -17,7 +17,7 @@ namespace API.Extentions
             services.AddScoped<IProductRepository, ProductRepository>();
             // add singleton //add transient
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.Configure<ApiBehaviorOptions>(options => { // we configure the service of the controllers 
                 options.InvalidModelStateResponseFactory = actionContext =>
                 {

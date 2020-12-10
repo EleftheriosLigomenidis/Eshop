@@ -19,6 +19,7 @@ using API.Middleware;
 using API.errors;
 using Microsoft.OpenApi.Models;
 using API.Extentions;
+using StackExchange.Redis;
 
 namespace API
 {
@@ -40,6 +41,12 @@ namespace API
            
             services.AddDbContext<EshopDb>(o =>
             o.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+
             services.AddApplicationServices(); 
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddSwaggerServices();
